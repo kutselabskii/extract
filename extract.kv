@@ -1,0 +1,32 @@
+#:kivy 2.0.0
+
+<MainScreen>:
+    Label:
+        id: title
+        top: root.top - 15
+        center_x: root.width / 2
+        font_size: 50
+        text: "Extract"
+        halign: "right"
+        valign: "middle"
+    TextInput:
+        id: input
+        top: title.top - 100
+        center_x: root.width / 4
+        size: root.width / 3, 100
+        hint_text: 'Paste photos numbers'
+        on_text: root.parse()
+    TextInput:
+        id: parsed
+        top: title.top - 100
+        center_x: root.width / 4 * 3
+        size: root.width / 3, 100
+        hint_text: 'These photos will be extracted'
+        readonly: True
+    TextInput:
+        id: template
+        top: input.top - 140
+        center_x: input.center_x
+        size: root.width / 3, 50
+        text: "IMG_*.CR3"
+    
