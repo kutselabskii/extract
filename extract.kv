@@ -1,5 +1,8 @@
 #:kivy 2.0.0
 
+#:import lv kivy.uix.listview
+#:import la kivy.adapters.listadapter
+
 <MainScreen>:
     Label:
         id: title
@@ -14,14 +17,14 @@
         top: title.top - 100
         center_x: root.width / 4
         size: root.width / 3, 100
-        hint_text: 'Paste photos numbers'
+        hint_text: "Paste photos numbers"
         on_text: root.parse()
     TextInput:
         id: parsed
         top: title.top - 100
         center_x: root.width / 4 * 3
         size: root.width / 3, 100
-        hint_text: 'These photos will be extracted'
+        hint_text: "These photos will be extracted"
         readonly: True
     TextInput:
         id: template
@@ -29,4 +32,29 @@
         center_x: input.center_x
         size: root.width / 3, 50
         text: "IMG_*.CR3"
-    
+    Button:
+        text: "Select source folder"
+        on_release: root.show_source_selector()
+
+<FolderSelector>
+    drives_list: drives_list
+    chooser: chooser
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        ListView:
+            id: drives_list
+            adapter: la.ListAdapter(data=root.get_win_drives(), selection_mode='single', allow_empty_selection=False, cls=lv.ListItemButton)
+        FileChooserIconView:
+            id: chooser
+            filters: [root.is_dir]
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+            Button:
+                text: "Select"
+                on_release: root.load(chooser.path, chooser.selection)
