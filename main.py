@@ -1,4 +1,5 @@
 from kivy.app import App
+from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
@@ -13,7 +14,13 @@ class FolderSelector(FloatLayout):
 
     def __init__(self, **kwargs):
         super(FolderSelector, self).__init__(**kwargs)
-        self.drives_list.adapter.bind(on_selection_change=self.drive_selection_changed)
+        # self.drives_list.adapter.bind(on_selection_change=self.drive_selection_changed)
+
+        for drive in self.get_win_drives():
+            btn = Button(text=drive, size_hint_y=None, height=20)
+            btn.bind(on_release=lambda btn: self.drive_selection_changed(btn.text))
+
+            self.ids.drop.add_widget(btn)
 
     def is_dir(self, directory, filename):
         return os.path.isdir(os.path.join(directory, filename))
@@ -29,8 +36,9 @@ class FolderSelector(FloatLayout):
             else:
                 return []
 
-    def drive_selection_changed(self, *args):
-        self.file_chooser.path = args[0].selection[0].text
+    def drive_selection_changed(self, text):
+        self.ids.drop.select(text)
+        self.ids.chooser.path = text
 
 class MainScreen(Widget):
     def parse(self):
@@ -48,12 +56,19 @@ class MainScreen(Widget):
         self._popup = Popup(title="Select source folder", content=content, size_hint=(0.9, 0.9))
         self._popup.open()
 
+    def show_target_selector(self):
+        content = FolderSelector(load=self.select_target, cancel=self.dismiss_popup)
+        self._popup = Popup(title="Select target folder", content=content, size_hint=(0.9, 0.9))
+        self._popup.open()
+
     def select_source(self, path, filename):
         print(path, filename)
 
         self.dismiss_popup()
 
     def select_target(self, path, filename):
+        print(path, filename)
+
         pass
 
 class ExtractApp(App):

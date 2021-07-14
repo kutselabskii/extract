@@ -1,8 +1,5 @@
 #:kivy 2.0.0
 
-#:import lv kivy.uix.listview
-#:import la kivy.adapters.listadapter
-
 <MainScreen>:
     Label:
         id: title
@@ -35,17 +32,18 @@
     Button:
         text: "Select source folder"
         on_release: root.show_source_selector()
+    Button:
+        text: "Select target folder"
+        on_release: root.show_target_selector()
 
 <FolderSelector>
-    drives_list: drives_list
     chooser: chooser
     BoxLayout:
         size: root.size
         pos: root.pos
         orientation: "vertical"
-        ListView:
-            id: drives_list
-            adapter: la.ListAdapter(data=root.get_win_drives(), selection_mode='single', allow_empty_selection=False, cls=lv.ListItemButton)
+        DropDown:
+            id: drop
         FileChooserIconView:
             id: chooser
             filters: [root.is_dir]
