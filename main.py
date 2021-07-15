@@ -7,6 +7,9 @@ from kivy.properties import ObjectProperty
 from kivy.utils import platform
 
 import os
+from pathlib import Path
+from shutil import copy2
+import codecs
 
 class FolderSelector(FloatLayout):
     load = ObjectProperty(None)
@@ -14,7 +17,6 @@ class FolderSelector(FloatLayout):
 
     def __init__(self, **kwargs):
         super(FolderSelector, self).__init__(**kwargs)
-        # self.drives_list.adapter.bind(on_selection_change=self.drive_selection_changed)
 
         for drive in self.get_win_drives():
             btn = Button(text=drive, size_hint_y=None, height=20)
@@ -41,12 +43,16 @@ class FolderSelector(FloatLayout):
         self.ids.chooser.path = text
 
 class MainScreen(Widget):
+    sourcePath = ""
+    targetPath = ""
+    filenames = []
+
     def parse(self):
         text = self.ids.input.text
         numbers = text.replace(',', ' ').split()
-        filenames = list(map(lambda x: self.ids.template.text.replace('*', x), numbers))
+        self.filenames = list(filter(None, map(lambda x: self.ids.template.text.replace('*', x), numbers)))
 
-        self.ids.parsed.text = '\n'.join(filenames)
+        self.ids.parsed.text = '\n'.join(self.filenames)
 
     def dismiss_popup(self):
         self._popup.dismiss()
@@ -62,14 +68,19 @@ class MainScreen(Widget):
         self._popup.open()
 
     def select_source(self, path, filename):
-        print(path, filename)
+        self.sourcePath = path
 
         self.dismiss_popup()
 
     def select_target(self, path, filename):
-        print(path, filename)
+        self.targetPath = path
 
-        pass
+        self.dismiss_popup()
+
+    def extract(self):
+        for file in self.filenames:
+            path = Path(self.sourcePath).joinpath(file)
+            copy2(path, self.targetPath)
 
 class ExtractApp(App):
     def build(self):

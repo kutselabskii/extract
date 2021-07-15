@@ -30,11 +30,23 @@
         size: root.width / 3, 50
         text: "IMG_*.CR3"
     Button:
+        id: sourceButton
         text: "Select source folder"
         on_release: root.show_source_selector()
+        top: template.top - 90
+        center_x: input.center_x
     Button:
+        id: targetButton
         text: "Select target folder"
         on_release: root.show_target_selector()
+        top: template.top - 90
+        center_x: parsed.center_x
+    Button:
+        id: startButton
+        text: "Begin"
+        on_release: root.extract()
+        top: sourceButton.top - 90
+        center_x: title.center_x
 
 <FolderSelector>
     chooser: chooser
