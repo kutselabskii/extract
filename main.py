@@ -69,11 +69,13 @@ class MainScreen(Widget):
 
     def select_source(self, path, filename):
         self.sourcePath = path
+        self.ids.sourceLabel.text = path
 
         self.dismiss_popup()
 
     def select_target(self, path, filename):
         self.targetPath = path
+        self.ids.targetLabel.text = path
 
         self.dismiss_popup()
 

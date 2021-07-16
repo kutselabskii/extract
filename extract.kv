@@ -1,52 +1,86 @@
 #:kivy 2.0.0
 
 <MainScreen>:
-    Label:
-        id: title
-        top: root.top - 15
-        center_x: root.width / 2
-        font_size: 50
-        text: "Extract"
-        halign: "right"
-        valign: "middle"
-    TextInput:
-        id: input
-        top: title.top - 100
-        center_x: root.width / 4
-        size: root.width / 3, 100
-        hint_text: "Paste photos numbers"
-        on_text: root.parse()
-    TextInput:
-        id: parsed
-        top: title.top - 100
-        center_x: root.width / 4 * 3
-        size: root.width / 3, 100
-        hint_text: "These photos will be extracted"
-        readonly: True
-    TextInput:
-        id: template
-        top: input.top - 140
-        center_x: input.center_x
-        size: root.width / 3, 50
-        text: "IMG_*.CR3"
-    Button:
-        id: sourceButton
-        text: "Select source folder"
-        on_release: root.show_source_selector()
-        top: template.top - 90
-        center_x: input.center_x
-    Button:
-        id: targetButton
-        text: "Select target folder"
-        on_release: root.show_target_selector()
-        top: template.top - 90
-        center_x: parsed.center_x
-    Button:
-        id: startButton
-        text: "Begin"
-        on_release: root.extract()
-        top: sourceButton.top - 90
-        center_x: title.center_x
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.size
+        spacing_vertical: -10
+        padding: 25, 25
+        BoxLayout:
+            spacing: 40
+            AnchorLayout:
+                anchor_x: 'left'
+                TextInput:
+                    id: input
+                    hint_text: "Paste photos numbers"
+                    on_text: root.parse()
+            AnchorLayout:
+                anchor_x: 'right'
+                TextInput:
+                    id: parsed
+                    hint_text: "These photos will be extracted"
+                    readonly: True
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            BoxLayout:
+                AnchorLayout:
+                    anchor_x: 'right'
+                    anchor_y: 'center'
+                    Label:
+                        id: templateLabel
+                        font_size: 35
+                        text: "Template:"
+                        halign: "right"
+                AnchorLayout:
+                    anchor_x: 'left'
+                    anchor_y: 'center'
+                    TextInput:
+                        id: template
+                        size_hint: 1, 0.5
+                        text: "IMG_*.CR3"
+        BoxLayout:
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'center'
+                Button:
+                    id: sourceButton
+                    text: "Select source folder"
+                    on_release: root.show_source_selector()
+                    size_hint: 0.8, 0.6
+            AnchorLayout:
+                anchor_x: 'left'
+                anchor_y: 'center'
+                Label:
+                    id: sourceLabel
+                    font_size: 35
+                    text: 'Source folder'
+                    halign: 'left'
+        BoxLayout:
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'center'
+                Button:
+                    id: targetButton
+                    text: "Select target folder"
+                    on_release: root.show_target_selector()
+                    size_hint: 0.8, 0.6
+            AnchorLayout:
+                anchor_x: 'left'
+                anchor_y: 'center'
+                Label:
+                    id: targetLabel
+                    font_size: 35
+                    text: 'Target folder'
+                    halign: 'left'
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            Button:
+                id: startButton
+                text: "Begin"
+                on_release: root.extract()
+                size_hint: 0.4, 0.6
 
 <FolderSelector>
     chooser: chooser
