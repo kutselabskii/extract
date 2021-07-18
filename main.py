@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
+from kivy.uix.progressbar import ProgressBar
 from kivy.uix.widget import Widget
 from kivy.properties import ObjectProperty
 from kivy.utils import platform
@@ -9,7 +10,6 @@ from kivy.utils import platform
 import os
 from pathlib import Path
 from shutil import copy2
-import codecs
 
 class FolderSelector(FloatLayout):
     load = ObjectProperty(None)
@@ -80,9 +80,15 @@ class MainScreen(Widget):
         self.dismiss_popup()
 
     def extract(self):
-        for file in self.filenames:
-            path = Path(self.sourcePath).joinpath(file)
+        pb = self.ids.progress
+        pb.value = 0
+        pb.max = len(self.filenames)
+
+        for i, photo in enumerate(self.filenames):
+            pb.value = i + 1
+            path = Path(self.sourcePath).joinpath(photo)
             copy2(path, self.targetPath)
+
 
 class ExtractApp(App):
     def build(self):

@@ -2,6 +2,7 @@
 
 <MainScreen>:
     BoxLayout:
+        id: mainBox
         orientation: 'vertical'
         size: root.size
         spacing_vertical: -10
@@ -81,6 +82,15 @@
                 text: "Begin"
                 on_release: root.extract()
                 size_hint: 0.4, 0.6
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            ProgressBar:
+                id: progress
+                min: 0
+                value: 0
+                max: 1
+                size_hint: 0.5, 0.7
 
 <FolderSelector>
     chooser: chooser
@@ -102,3 +112,4 @@
             Button:
                 text: "Select"
                 on_release: root.load(chooser.path, chooser.selection)
+    
