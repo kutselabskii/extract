@@ -11,6 +11,11 @@ import os
 from pathlib import Path
 from shutil import copy2
 
+
+class DriveButton(Button):
+    pass
+
+
 class FolderSelector(FloatLayout):
     load = ObjectProperty(None)
     cancel = ObjectProperty(None)
@@ -19,7 +24,7 @@ class FolderSelector(FloatLayout):
         super(FolderSelector, self).__init__(**kwargs)
 
         for drive in self.get_win_drives():
-            btn = Button(text=drive, size_hint_y=None, height=20)
+            btn = DriveButton(text=drive, size_hint_y=None, height=20)
             btn.bind(on_release=lambda btn: self.drive_selection_changed(btn.text))
 
             self.ids.drop.add_widget(btn)
@@ -41,6 +46,9 @@ class FolderSelector(FloatLayout):
     def drive_selection_changed(self, text):
         self.ids.drop.select(text)
         self.ids.chooser.path = text
+
+    def update_file_list_entry(self, file_chooser, file_list_entry, *args):
+        file_list_entry.children[1].color = (0, 0, 0, 1)
 
 class MainScreen(Widget):
     sourcePath = ""

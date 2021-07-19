@@ -1,6 +1,14 @@
 #:kivy 2.0.0
 
+#:import utils kivy.utils
+
 <MainScreen>:
+    canvas.before:
+        Color:
+            rgba: utils.rgba('cdb4db')
+        Rectangle:
+            pos: self.pos
+            size: self.size
     BoxLayout:
         id: mainBox
         orientation: 'vertical'
@@ -15,12 +23,16 @@
                     id: input
                     hint_text: "Paste photos numbers"
                     on_text: root.parse()
+                    color: utils.rgba('000000')
+                    background_color: utils.rgba('a2d2ff')
             AnchorLayout:
                 anchor_x: 'right'
                 TextInput:
                     id: parsed
                     hint_text: "These photos will be extracted"
                     readonly: True
+                    color: utils.rgba('000000')
+                    background_color: utils.rgba('a2d2ff')
         AnchorLayout:
             anchor_x: 'center'
             anchor_y: 'center'
@@ -33,6 +45,7 @@
                         font_size: 35
                         text: "Template:"
                         halign: "right"
+                        color: utils.rgba('000000')
                 AnchorLayout:
                     anchor_x: 'left'
                     anchor_y: 'center'
@@ -40,6 +53,8 @@
                         id: template
                         size_hint: 1, 0.5
                         text: "IMG_*.CR3"
+                        color: utils.rgba('000000')
+                        background_color: utils.rgba('a2d2ff')
         BoxLayout:
             AnchorLayout:
                 anchor_x: 'right'
@@ -49,6 +64,7 @@
                     text: "Select source folder"
                     on_release: root.show_source_selector()
                     size_hint: 0.8, 0.6
+                    background_color: utils.rgba('ffafcc')
             AnchorLayout:
                 anchor_x: 'left'
                 anchor_y: 'center'
@@ -57,6 +73,7 @@
                     font_size: 35
                     text: 'Source folder'
                     halign: 'left'
+                    color: utils.rgba('000000')
         BoxLayout:
             AnchorLayout:
                 anchor_x: 'right'
@@ -66,6 +83,7 @@
                     text: "Select target folder"
                     on_release: root.show_target_selector()
                     size_hint: 0.8, 0.6
+                    background_color: utils.rgba('ffafcc')
             AnchorLayout:
                 anchor_x: 'left'
                 anchor_y: 'center'
@@ -74,6 +92,7 @@
                     font_size: 35
                     text: 'Target folder'
                     halign: 'left'
+                    color: utils.rgba('000000')
         AnchorLayout:
             anchor_x: 'center'
             anchor_y: 'center'
@@ -82,6 +101,7 @@
                 text: "Begin"
                 on_release: root.extract()
                 size_hint: 0.4, 0.6
+                background_color: utils.rgba('ffafcc')
         AnchorLayout:
             anchor_x: 'center'
             anchor_y: 'center'
@@ -91,8 +111,15 @@
                 value: 0
                 max: 1
                 size_hint: 0.5, 0.7
+                background_color: utils.rgba('a2d2ff')
 
 <FolderSelector>
+    canvas.before:
+        Color:
+            rgba: utils.rgba('6d597a')
+        Rectangle:
+            pos: self.pos
+            size: self.size
     chooser: chooser
     BoxLayout:
         size: root.size
@@ -100,16 +127,25 @@
         orientation: "vertical"
         DropDown:
             id: drop
+            background_color: utils.rgba('ffafcc')
         FileChooserIconView:
             id: chooser
             filters: [root.is_dir]
+            color: utils.rgba('000000')
+            background_color: utils.rgba('ffafcc')
+            on_entry_added: root.update_file_list_entry
         BoxLayout:
             size_hint_y: None
             height: 30
             Button:
                 text: "Cancel"
                 on_release: root.cancel()
+                background_color: utils.rgba('ffafcc')
             Button:
                 text: "Select"
                 on_release: root.load(chooser.path, chooser.selection)
+                background_color: utils.rgba('ffafcc')
+
+<DriveButton>
+    background_color: utils.rgba('ffafcc')
     
