@@ -88,12 +88,12 @@ class MainScreen(Widget):
         self.dismiss_popup()
 
     def extract(self):
-        pb = self.ids.progress
-        pb.value = 0
-        pb.max = len(self.filenames)
+        progressBar = self.ids.progress
+        progressBar.value = 0
+        progressBar.max = len(self.filenames)
 
         for i, photo in enumerate(self.filenames):
-            pb.value = i + 1
+            progressBar.value = i + 1
             path = Path(self.sourcePath).joinpath(photo)
             copy2(path, self.targetPath)
 
