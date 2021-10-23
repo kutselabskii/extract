@@ -8,6 +8,7 @@ from kivy.properties import ObjectProperty
 from kivy.utils import platform
 
 import os
+import re
 from pathlib import Path
 from shutil import copy2
 
@@ -57,8 +58,14 @@ class MainScreen(Widget):
 
     def parse(self):
         text = self.ids.input.text
-        numbers = text.replace(',', ' ').split()
-        self.filenames = list(filter(None, map(lambda x: self.ids.template.text.replace('*', x), numbers)))
+        lines = text.replace(',', ' ').split()
+        numbers = []
+        for line in lines:
+            search = re.match(r'\d{4}', line)
+            if search is not None:
+                numbers.append(self.ids.template.text.replace('*', search.group(0)))
+
+        self.filenames = numbers
 
         self.ids.parsed.text = '\n'.join(self.filenames)
 
