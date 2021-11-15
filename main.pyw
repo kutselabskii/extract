@@ -102,7 +102,8 @@ class MainScreen(Widget):
         for i, photo in enumerate(self.filenames):
             progressBar.value = i + 1
             path = Path(self.sourcePath).joinpath(photo)
-            copy2(path, self.targetPath)
+            if os.path.exists(path):
+                copy2(path, self.targetPath)
 
 
 class ExtractApp(App):
