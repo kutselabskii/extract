@@ -8,10 +8,32 @@ from kivy.properties import ObjectProperty
 from kivy.utils import platform
 
 import os
+import sys
 import re
 from pathlib import Path
 from shutil import copy2
+import logging
 
+logger = None
+
+def initLogging():
+    global logger
+
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
+
+    stdout_handler = logging.StreamHandler(sys.stdout)
+    stdout_handler.setLevel(logging.DEBUG)
+    stdout_handler.setFormatter(formatter)
+
+    fh = logging.FileHandler('log.log')
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(formatter)
+
+    logger.addHandler(fh)
+    logger.addHandler(stdout_handler)
 
 class DriveButton(Button):
     pass
@@ -104,6 +126,8 @@ class MainScreen(Widget):
             path = Path(self.sourcePath).joinpath(photo)
             if os.path.exists(path):
                 copy2(path, self.targetPath)
+            else:
+                logger.warning(f"File {path} not found!")
 
 
 class ExtractApp(App):
@@ -111,4 +135,8 @@ class ExtractApp(App):
         return MainScreen()
 
 if __name__ == "__main__":
-    ExtractApp().run()
+    initLogging()
+    try:
+        ExtractApp().run()
+    except Exception as e:
+        logger.critical(e)
