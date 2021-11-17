@@ -114,39 +114,6 @@
                 size_hint: 0.5, 0.7
                 background_color: utils.rgba('a2d2ff')
 
-<FolderSelector>
-    canvas.before:
-        Color:
-            rgba: utils.rgba('6d597a')
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    chooser: chooser
-    BoxLayout:
-        size: root.size
-        pos: root.pos
-        orientation: "vertical"
-        DropDown:
-            id: drop
-            background_color: utils.rgba('ffafcc')
-        FileChooserIconView:
-            id: chooser
-            filters: [root.is_dir]
-            color: utils.rgba('000000')
-            background_color: utils.rgba('ffafcc')
-            on_entry_added: root.update_file_list_entry
-        BoxLayout:
-            size_hint_y: None
-            height: 30
-            Button:
-                text: "Cancel"
-                on_release: root.cancel()
-                background_color: utils.rgba('ffafcc')
-            Button:
-                text: "Select"
-                on_release: root.load(chooser.path, chooser.selection)
-                background_color: utils.rgba('ffafcc')
-
 <DriveButton>
     background_color: utils.rgba('ffafcc')
     
