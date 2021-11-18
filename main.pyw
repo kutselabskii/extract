@@ -36,9 +36,6 @@ def initLogging():
     logger.addHandler(fh)
     logger.addHandler(stdout_handler)
 
-class DriveButton(Button):
-    pass
-
 class MainScreen(Widget):
     sourcePath = ""
     targetPath = ""
